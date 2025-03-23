@@ -64,15 +64,14 @@ class Banco
     public function abrirConta($tipoConta)
     {
         $this->setTipo($tipoConta);
-
         $this->setStatus(true);
 
         switch ($tipoConta) {
             case "CC":
-                $this->saldo += 50.0;
+                $this->setSaldo(50);
                 break;
             case "CP":
-                $this->saldo += 150.0;
+                $this->setSaldo(150);
                 break;
             default:
                 echo "Tipo de conta inválida!";
@@ -85,26 +84,28 @@ class Banco
         } elseif($this->getSaldo() < 0){
             echo "É preciso pagar débito pendente!";
         }else{
-            echo "Conta encerrada com sucesso";
+            echo "Conta " . $this->getNumConta() . " encerrada com sucesso";
             $this->setStatus(false);
         }
     }
     public function depositar($valorDepo) {
         if($this->getStatus()){
             $this->setSaldo($this->getSaldo() + $valorDepo);
+            echo "Deposito realizado na conta " . $this->getDono() . "<br>";
         } else{
             echo "Esta conta está inativa\n Saldo ou depósito desativados";
         }
     }
     public function sacar($saque) {
         if($this->getStatus()){
-            if($this->getSaldo() > 0){
+            if($this->getSaldo() >= $saque){
                 $this->setSaldo($this->getSaldo() - $saque);
+                echo "Saque autorizado na conta " . $this->getNumConta();
             } else{
-                echo "Saldo insuficiente";
+                echo "Saldo insuficiente!<br>Saque: " . number_format($saque, 2, ",", ".") . "<br>Saldo atual: " . number_format($this->getSaldo(), 2, ",", ".");
             }
         } else{
-            echo "Impossível sacar!";
+            echo "Conta fechada! ";
         }
     }
     public function pagarMensal() {
@@ -115,13 +116,14 @@ class Banco
             $valorCobrado = 20;
         }
         if($this->getStatus()){
-            if($this->getSaldo() > 0){
-                $this->setSaldo($this->getStatus() - $valorCobrado);
+            if($this->getSaldo() > $valorCobrado){
+                $this->setSaldo($this->getSaldo() - $valorCobrado);
+                "Mensalidade de $valorCobrado debitado de " . $this->getDono() . "<br>";
             } else{
                 echo "Saldo insuficiente";
             }
         } else{
-            echo "Impossível sacar";
+            echo "Impossível sacar! Conta Inativa";
         }
     }
 }
