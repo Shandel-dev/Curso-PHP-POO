@@ -28,7 +28,7 @@
         $c2->setIdade(17);
         $c2->setCurso("Administração");
         $c2->setBolsa(13.5);
-        print_r($c2);
+        print_r($c2); 
         $c2->renovarBolsa();
     ?>
 </pre>
